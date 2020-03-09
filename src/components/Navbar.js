@@ -1,12 +1,13 @@
 import React from "react";
+import logo from "../wsbc.jpg";
 
 class Navbar extends React.Component {
   render() {
     return (
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
         <div class="container">
           <a class="navbar-brand" href="#">
-            <img src="http://placehold.it/150x50?text=Logo" alt="" />
+            <img src={logo} alt="" width="140"/>
           </a>
           <button
             class="navbar-toggler"
