@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "axios";
-import InputLabel from "@material-ui/core/InputLabel";
+import React from 'react';
+import axios from 'axios';
+import Navbar from './Navbar';
 import {
   Container,
   Card,
@@ -13,21 +13,22 @@ import {
   Button,
   TextField,
   Typography
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-const baseUrl = "http://localhost:8080";
-const createdUrlbase = "http://localhost:8080/redirect/";
+const baseUrl = 'http://localhost:8080';
+const createdUrlbase = 'http://localhost:8080/redirect/';
 
 class Content extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      originalUrl: "",
-      shortUrl: "",
-      longUrl: "",
-      msgColor: "primary",
-      message: ""
+      originalUrl: '',
+      shortUrl: '',
+      msgColor: 'primary',
+      message: '',
+      generatedUrl: '',
+      btnDisabled: true
     };
 
     this.onChangeOriginalUrl = this.onChangeOriginalUrl.bind(this);
@@ -49,37 +50,37 @@ class Content extends React.Component {
 
   clear = () => {
     this.setState({
-      originalUrl: "",
-      shortUrl: "",
-      longUrl: "",
-      msgColor: "primary",
-      message: ""
+      urlId: '',
+      originalUrl: '',
+      shortUrl: '',
+      msgColor: 'primary',
+      message: '',
+      generatedUrl: '',
+      btnDisabled: true
     });
   };
 
   // bind this class method
   checkDuplicate = () => {
     axios
-      .get(baseUrl + "/checkDuplicate/" + this.state.shortUrl)
+      .get(baseUrl + '/checkDuplicate/' + this.state.shortUrl)
       .then(response => {
         if (response.data.duplicate) {
           this.setState({
             shortUrl: response.data.shortUrl,
-            longUrl: "",
-            msgColor: "secondary",
-            message:
-              "The short url '" +
-              response.data.shortUrl +
-              "' already exists!  " +
-              response.data.originalUrl
+            originalUrl: response.data.originalUrl,
+            msgColor: 'secondary',
+            message: 'The short url already exists with above long url!',
+            generatedUrl: createdUrlbase + response.data.shortUrl,
+            btnDisabled: false
           });
         } else {
           this.setState({
             message:
               "The short url '" + this.state.shortUrl + "' is available.",
             shortUrl: this.state.shortUrl,
-            longUrl: "",
-            msgColor: "primary"
+            msgColor: 'primary',
+            btnDisabled: false
           });
         }
       })
@@ -95,18 +96,19 @@ class Content extends React.Component {
       originalUrl: this.state.originalUrl,
       click: 0,
       last_updated: new Date(),
-      createdBy: "Admin"
+      createdBy: 'Admin'
     };
 
     axios
-      .post(baseUrl + "/shorten", obj)
+      .post(baseUrl + '/shorten', obj)
       .then(response => {
-        alert("then" + response);
         this.setState({
-          longUrl:
-            "A short url created successfully! " +
-            createdUrlbase +
-            response.data.shortUrl
+          shortUrl: '',
+          originalUrl: '',
+          message: 'A short url created successfully!',
+          msgColor: 'primary',
+          generatedUrl: createdUrlbase + response.data.shortUrl,
+          btnDisabled: false
         });
       })
       .catch(function(error) {
@@ -115,50 +117,51 @@ class Content extends React.Component {
   }
 
   render() {
+    const btnDisabled = this.state.btnDisabled;
     return (
       <Container>
         <Card>
           <form onSubmit={this.onSubmit}>
             <CardHeader
-              style={{ textAlign: "center" }}
-              subheader="shorten your URL"
+              style={{ textAlign: 'center' }}
+              subheader='shorten your URL'
               title={
-                <Typography weight={"bold"} variant={"h3"} gutterBottom>
+                <Typography weight={'bold'} variant={'h3'} gutterBottom>
                   Enter Long URL
                 </Typography>
               }
             />
             <Divider />
             <CardContent>
-              <Grid container spacing={3} alignItems="center">
+              <Grid container spacing={3} alignItems='center'>
                 <Grid item md={12} xs={12}>
                   <TextField
                     fullWidth
-                    label="Long URL"
-                    margin="dense"
+                    label='Long URL'
+                    margin='dense'
                     required
                     value={this.state.originalUrl}
                     onChange={this.onChangeOriginalUrl}
-                    variant="outlined"
+                    variant='outlined'
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     fullWidth
                     required
-                    label="Custom Short URL name"
-                    margin="dense"
+                    label='Custom Short URL name'
+                    margin='dense'
                     value={this.state.shortUrl}
                     onChange={this.onChangeShortUrl}
-                    variant="outlined"
+                    variant='outlined'
                   />
                 </Grid>
                 <Grid item md={6} xs={6}>
-                  <Grid container spacing={2} alignItems="center">
+                  <Grid container spacing={2} alignItems='center'>
                     <Grid item md={4} xs={4}>
                       <Button
-                        variant="outlined"
-                        color="primary"
+                        variant='outlined'
+                        color='primary'
                         onClick={this.checkDuplicate}
                       >
                         Check Availability
@@ -166,8 +169,8 @@ class Content extends React.Component {
                     </Grid>
                     <Grid item md={3} xs={3}>
                       <Button
-                        variant="outlined"
-                        color="primary"
+                        variant='outlined'
+                        color='primary'
                         onClick={this.clear}
                       >
                         Clear All
@@ -176,8 +179,23 @@ class Content extends React.Component {
                   </Grid>
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <Button color={this.state.msgColor} size="medium">
+                  <Button
+                    color={this.state.msgColor}
+                    size='medium'
+                    disabled={btnDisabled}
+                  >
                     {this.state.message}
+                  </Button>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <Button
+                    color={this.state.msgColor}
+                    size='medium'
+                    disabled={btnDisabled}
+                  >
+                    <a href={this.state.generatedUrl} target='_blank'>
+                      {this.state.generatedUrl}
+                    </a>
                   </Button>
                 </Grid>
               </Grid>
@@ -185,16 +203,13 @@ class Content extends React.Component {
             <Divider />
             <CardActions>
               <input
-                type="submit"
-                value="Create a short URL"
-                className="btn btn-primary btn-md"
+                type='submit'
+                value='Create a short URL'
+                className='btn btn-primary btn-md'
               />
             </CardActions>
           </form>
         </Card>
-        <p />
-
-        <div class="label label-default">{this.state.longUrl}</div>
       </Container>
     );
   }
