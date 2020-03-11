@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
-import { Card, CardHeader } from '@material-ui/core';
+import { Card, CardHeader, Container } from '@material-ui/core';
 
 const baseUrl = 'http://localhost:8080';
 
@@ -36,30 +36,32 @@ export default class ManageList extends React.Component {
   }
 
   render() {
+    const headerText = 'Short URL is based on ' + baseUrl + '/redirect/';
     return (
       <div>
-        <Navbar></Navbar>
-        <Card>
-        <CardHeader
-            style={{ textAlign: 'center' }}
-            subheader='Admin can be edited or deleted URLs'
-            title='Manage URLs'          
-          />
-          <table className='table table-striped' style={{ marginTop: 5 }}>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Original URL</th>
-                <th>Short URL</th>
-                <th>Clicked</th>
-                <th>Created By</th>
-                <th>Updated</th>
-                <th colSpan='3'>Actions</th>
-              </tr>
-            </thead>
-            <tbody>{this.tabRow()}</tbody>
-          </table>
-        </Card>
+        <Container>
+          <Card>
+            <CardHeader
+              style={{ textAlign: 'center' }}
+              subheader={headerText}
+              title='Manage URLs'
+            />
+            <table className='table table-striped' style={{ marginTop: 5 }}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Original URL</th>
+                  <th>Short URL</th>
+                  <th>Clicked</th>
+                  <th>Created By</th>
+                  <th>Updated</th>
+                  <th colSpan='3'>Actions</th>
+                </tr>
+              </thead>
+              <tbody>{this.tabRow()}</tbody>
+            </table>
+          </Card>
+        </Container>
       </div>
     );
   }

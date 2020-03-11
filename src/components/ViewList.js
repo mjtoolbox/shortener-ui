@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
-import { Card, CardHeader } from '@material-ui/core';
+import { Card, CardHeader, Container } from '@material-ui/core';
 
 const baseUrl = 'http://localhost:8080';
 
@@ -38,24 +38,25 @@ export default class ViewList extends React.Component {
   render() {
     return (
       <div>
-        <Navbar></Navbar>
-        <Card>
-        <CardHeader
-            style={{ textAlign: 'center' }}
-            subheader='Users can view existing URLs'
-            title='View URLs'          
-          />
-          <table className='table table-striped' style={{ marginTop: 5 }}>
-            <thead>
-              <tr>
-                <th>Original URL</th>
-                <th>Short URL</th>
-                <th>Clicked</th>              
-              </tr>
-            </thead>
-            <tbody>{this.tabRow()}</tbody>
-          </table>
-        </Card>
+        <Container>
+          <Card>
+            <CardHeader
+              style={{ textAlign: 'center' }}
+              subheader='Users can view existing URLs'
+              title='View URLs'
+            />
+            <table className='table table-striped' style={{ marginTop: 5 }}>
+              <thead>
+                <tr>
+                  <th>Original URL</th>
+                  <th>Short URL</th>
+                  <th>Clicked</th>
+                </tr>
+              </thead>
+              <tbody>{this.tabRow()}</tbody>
+            </table>
+          </Card>
+        </Container>
       </div>
     );
   }

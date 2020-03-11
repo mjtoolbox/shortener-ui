@@ -6,7 +6,7 @@ class Navbar extends React.Component {
     return (
       <nav class='navbar navbar-expand-lg navbar-light bg-light static-top'>
         <div class='container'>
-          <a class='navbar-brand' href='#'>
+          <a class='navbar-brand' href='/'>
             <img src={logo} alt='' width='140' />
           </a>
           <button

@@ -4,12 +4,12 @@ import moment from 'moment';
 const redirectUrl = 'http://localhost:8080/redirect/';
 
 export default class ViewLog extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
-    const accessDate = moment(this.props.obj.last_accessed).format(
+    const accessDate = moment(this.props.obj.lastAccessed).format(
       'YYYY-MM-DD HH:MM'
     );
 

@@ -53,7 +53,7 @@ export default class UrlRow extends React.Component {
         </td>
         <td>
           <Link
-            to={'/logs/' + this.props.obj.shortUrl}
+            to={'/manage/logs/' + this.props.obj.shortUrl}
             className='btn btn-primary btn-sm'
           >Log</Link>
         </td>

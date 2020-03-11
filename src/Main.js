@@ -5,7 +5,6 @@ import Content from './components/Content';
 function Main() {
   return (
     <div>
-      <Navbar></Navbar>
       <Content></Content>
     </div>
   );

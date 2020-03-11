@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 const redirectUrl = 'http://localhost:8080/redirect/';
 
 export default class ViewRow extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     // <th>Original URL</th>
