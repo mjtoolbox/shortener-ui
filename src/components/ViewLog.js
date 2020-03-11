@@ -1,8 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 
-const redirectUrl = 'http://localhost:8080/redirect/';
-
 export default class ViewLog extends React.Component {
   // constructor(props) {
   //   super(props);

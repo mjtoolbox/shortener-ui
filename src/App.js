@@ -1,23 +1,24 @@
 import React from 'react';
 import './App.css';
 import logo from './wsbc.jpg';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Main from './Main';
 import ManageList from './components/ManageList';
 import ViewList from './components/ViewList';
 import UrlEdit from './components/UrlEdit';
 import LogList from './components/LogList';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Login from './Login';
 
 function App() {
   return (
     <Router>
-      <nav class='navbar navbar-expand-lg navbar-light bg-light static-top'>
-        <div class='container'>
-          <a class='navbar-brand' href='/'>
+      <nav className='navbar navbar-expand-lg navbar-light bg-light static-top'>
+        <div className='container'>
+          <a className='navbar-brand' href='/'>
             <img src={logo} alt='' width='140' />
           </a>
           <button
-            class='navbar-toggler'
+            className='navbar-toggler'
             type='button'
             data-toggle='collapse'
             data-target='#navbarResponsive'
@@ -25,23 +26,28 @@ function App() {
             aria-expanded='false'
             aria-label='Toggle navigation'
           >
-            <span class='navbar-toggler-icon'></span>
+            <span className='navbar-toggler-icon'></span>
           </button>
-          <div class='collapse navbar-collapse' id='navbarResponsive'>
-            <ul class='navbar-nav ml-auto'>
-              <li class='nav-item active'>
+          <div className='collapse navbar-collapse' id='navbarResponsive'>
+            <ul className='navbar-nav ml-auto'>
+              <li className='nav-item active'>
                 <Link to={'/'} className='nav-link'>
                   Home
                 </Link>
               </li>
-              <li class='nav-item'>
+              <li className='nav-item'>
                 <Link to={'/urls'} className='nav-link'>
                   URLs
                 </Link>
               </li>
-              <li class='nav-item'>
+              <li className='nav-item'>
                 <Link to={'/manage'} className='nav-link'>
                   Manage
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link to={'/login'} className='nav-link'>
+                  Login
                 </Link>
               </li>
             </ul>
@@ -55,8 +61,8 @@ function App() {
         <Route exact path='/urls' component={ViewList} />
         <Route exact path='/edit/:urlId' component={UrlEdit} />
         <Route exact path='/manage/logs/:shortUrl' component={LogList} />
-        {/* <Route exact path='/login' component={LoginComponent} />
-        <Route exact path='/logout' component={Logout} />  */}
+        <Route exact path='/login' component={Login} />
+        {/* <Route exact path='/logout' component={Logout} />  */}
       </Switch>
     </Router>
   );
