@@ -30,6 +30,11 @@ class Navbar extends React.Component {
               </li>
               <li class='nav-item'>
                 <a class='nav-link' href='urls'>
+                  URLs
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a class='nav-link' href='manage'>
                   Manage
                 </a>
               </li>

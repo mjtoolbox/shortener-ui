@@ -46,10 +46,16 @@ export default class UrlRow extends React.Component {
             Edit
           </Link>
         </td>
-        <td>
+        <td >
           <button onClick={this.delete} className='btn btn-danger btn-sm'>
             Delete
           </button>
+        </td>
+        <td>
+          <Link
+            to={'/logs/' + this.props.obj.shortUrl}
+            className='btn btn-primary btn-sm'
+          >Log</Link>
         </td>
       </tr>
     );

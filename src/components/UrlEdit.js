@@ -212,6 +212,13 @@ export default class UrlEdit extends React.Component {
                   value='Update URL'
                   className='btn btn-primary btn-md'
                 />
+                <Button
+                  title='Cancel'
+                  className='btn btn-primary btn-md'
+                  onClick={() => this.props.history.goBack()}
+                >
+                  Cancel
+                </Button>
               </CardActions>
             </form>
           </Card>

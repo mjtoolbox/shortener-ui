@@ -1,15 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import UrlRow from './UrlRow';
+import ViewRow from './ViewRow';
 import Navbar from './Navbar';
 
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
-import { Card } from '@material-ui/core';
+import { Card, CardHeader } from '@material-ui/core';
 
 const baseUrl = 'http://localhost:8080';
 
-export default class UrlList extends React.Component {
+export default class ViewList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -31,7 +31,7 @@ export default class UrlList extends React.Component {
 
   tabRow() {
     return this.state.urls.map(function(object, i) {
-      return <UrlRow obj={object} key={i} />;
+      return <ViewRow obj={object} key={i} />;
     });
   }
 
@@ -40,16 +40,17 @@ export default class UrlList extends React.Component {
       <div>
         <Navbar></Navbar>
         <Card>
+        <CardHeader
+            style={{ textAlign: 'center' }}
+            subheader='Users can view existing URLs'
+            title='View URLs'          
+          />
           <table className='table table-striped' style={{ marginTop: 5 }}>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Original URL</th>
                 <th>Short URL</th>
-                <th>Clicked</th>
-                <th>Created By</th>
-                <th>Updated</th>
-                <th colSpan='2'>Actions</th>
+                <th>Clicked</th>              
               </tr>
             </thead>
             <tbody>{this.tabRow()}</tbody>
