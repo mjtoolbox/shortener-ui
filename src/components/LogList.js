@@ -1,18 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import ViewLog from './ViewLog';
-import Navbar from './Navbar';
-
-import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
 import { Card, CardHeader, Container } from '@material-ui/core';
-
-const baseUrl = 'http://localhost:8080';
-const redirectUrl = 'http://localhost:8080/redirect/';
+import Configuration from '../Configuration';
 
 export default class LogList extends React.Component {
   constructor(props) {
     super(props);
+    this.config = new Configuration();
 
     this.state = {
       logs: []
@@ -21,7 +16,9 @@ export default class LogList extends React.Component {
 
   componentDidMount() {
     axios
-      .get(baseUrl + '/logs/' + this.props.match.params.shortUrl)
+      .get(
+        this.config.API_BASE_URL + '/logs/' + this.props.match.params.shortUrl
+      )
       .then(response => {
         this.setState({ logs: response.data });
       })
@@ -37,10 +34,11 @@ export default class LogList extends React.Component {
   }
 
   render() {
-    const generatedUrl = redirectUrl + this.props.match.params.shortUrl;
+    const generatedUrl =
+      this.config.REDIRECT_URL + this.props.match.params.shortUrl;
     return (
       <div>
-        <Container>
+        <Container maxWidth='lg'>
           <Card>
             <CardHeader
               style={{ textAlign: 'center' }}

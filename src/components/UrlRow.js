@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
-
-const baseUrl = 'http://localhost:8080';
+import Configuration from '../Configuration';
 
 export default class UrlRow extends React.Component {
   constructor(props) {
     super(props);
+    this.config = new Configuration();
     this.delete = this.delete.bind(this);
   }
 
   delete() {
     axios
-      .delete(baseUrl + '/urls/' + this.props.obj.urlId)
+      .delete(this.config.API_BASE_URL + '/urls/' + this.props.obj.urlId)
       .then(res => console.log('deleted'))
       .catch(err => console.log(err));
   }
@@ -23,13 +23,7 @@ export default class UrlRow extends React.Component {
       'YYYY-MM-DD HH:MM'
     );
 
-    // <th>ID</th>
-    // <th>Original URL</th>
-    // <th>Short URL</th>
-    // <th>Clicked</th>
-    // <th>Created By</th>
-    // <th>Updated</th>
-
+    
     return (
       <tr>
         <td>{this.props.obj.urlId}</td>

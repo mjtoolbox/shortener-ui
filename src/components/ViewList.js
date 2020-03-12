@@ -1,18 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import ViewRow from './ViewRow';
-import Navbar from './Navbar';
-
-import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
 import { Card, CardHeader, Container } from '@material-ui/core';
-
-const baseUrl = 'http://localhost:8080';
+import Configuration from '../Configuration';
 
 export default class ViewList extends React.Component {
   constructor(props) {
     super(props);
-
+    this.config = new Configuration();
     this.state = {
       urls: []
     };
@@ -20,7 +15,7 @@ export default class ViewList extends React.Component {
 
   componentDidMount() {
     axios
-      .get(baseUrl + '/urls', {})
+      .get(this.config.API_BASE_URL + '/urls', {})
       .then(response => {
         this.setState({ urls: response.data });
       })
@@ -38,7 +33,7 @@ export default class ViewList extends React.Component {
   render() {
     return (
       <div>
-        <Container>
+        <Container maxWidth="xl">
           <Card>
             <CardHeader
               style={{ textAlign: 'center' }}

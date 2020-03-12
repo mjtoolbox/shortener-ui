@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
+import Configuration from '../Configuration';
 import {
   Container,
   Card,
@@ -9,19 +9,15 @@ import {
   CardActions,
   Divider,
   Grid,
-  Box,
   Button,
   TextField,
   Typography
 } from '@material-ui/core';
 
-const baseUrl = 'http://localhost:8080';
-const createdUrlbase = 'http://localhost:8080/redirect/';
-
 class Content extends React.Component {
   constructor(props) {
     super(props);
-
+    this.config = new Configuration();
     this.state = {
       originalUrl: '',
       shortUrl: '',
@@ -62,31 +58,41 @@ class Content extends React.Component {
 
   // bind this class method
   checkDuplicate = () => {
-    axios
-      .get(baseUrl + '/checkDuplicate/' + this.state.shortUrl)
-      .then(response => {
-        if (response.data.duplicate) {
-          this.setState({
-            shortUrl: response.data.shortUrl,
-            originalUrl: response.data.originalUrl,
-            msgColor: 'secondary',
-            message: 'The short url already exists with above long url!',
-            generatedUrl: createdUrlbase + response.data.shortUrl,
-            btnDisabled: false
-          });
-        } else {
-          this.setState({
-            message:
-              "The short url '" + this.state.shortUrl + "' is available.",
-            shortUrl: this.state.shortUrl,
-            msgColor: 'primary',
-            btnDisabled: false
-          });
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
+    if (this.state.shortUrl === '') {
+      this.setState({
+        msgColor: 'secondary',
+        message: 'The short url cannot be empty',
+        btnDisabled: false
       });
+    } else {
+      axios
+        .get(
+          this.config.API_BASE_URL + '/checkDuplicate/' + this.state.shortUrl
+        )
+        .then(response => {
+          if (response.data.duplicate) {
+            this.setState({
+              shortUrl: response.data.shortUrl,
+              originalUrl: response.data.originalUrl,
+              msgColor: 'secondary',
+              message: 'The short url already exists with above long url!',
+              generatedUrl: this.config.REDIRECT_URL + response.data.shortUrl,
+              btnDisabled: false
+            });
+          } else {
+            this.setState({
+              message:
+                "The short url '" + this.state.shortUrl + "' is available.",
+              shortUrl: this.state.shortUrl,
+              msgColor: 'primary',
+              btnDisabled: false
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   };
 
   onSubmit(e) {
@@ -100,14 +106,14 @@ class Content extends React.Component {
     };
 
     axios
-      .post(baseUrl + '/shorten', obj)
+      .post(this.config.API_BASE_URL + '/shorten', obj)
       .then(response => {
         this.setState({
           shortUrl: '',
           originalUrl: '',
           message: 'A short url created successfully!',
           msgColor: 'primary',
-          generatedUrl: createdUrlbase + response.data.shortUrl,
+          generatedUrl: this.config.REDIRECT_URL + response.data.shortUrl,
           btnDisabled: false
         });
       })
@@ -126,7 +132,7 @@ class Content extends React.Component {
               style={{ textAlign: 'center' }}
               subheader='shorten your URL'
               title={
-                <Typography weight={'bold'} variant={'h3'} gutterBottom>
+                <Typography weight={'bold'} variant={'h4'} gutterBottom>
                   Enter Long URL
                 </Typography>
               }
@@ -193,7 +199,11 @@ class Content extends React.Component {
                     size='medium'
                     disabled={btnDisabled}
                   >
-                    <a href={this.state.generatedUrl} target='_blank'>
+                    <a
+                      href={this.state.generatedUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
                       {this.state.generatedUrl}
                     </a>
                   </Button>

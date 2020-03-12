@@ -1,132 +1,21 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import axios from 'axios';
+import Tooltip from '@material-ui/core/Tooltip';
+import { Link } from 'react-router-dom';
 
-const styles = {
-  center: {
-    display: 'flex',
-    justifyContent: 'center',
-    fontWeight: 'bold'
-  },
-  notification: {
-    display: 'flex',
-    justifyContent: 'center',
-    color: '#dc3545'
-  },
-  header: {
-    fontWeight: 900,
-    minWidth: 0,
-    fontSize: 18,
-    color: 'white'
-  }
-};
-
-const baseUrl = 'http://localhost:8080';
-
-export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // reset login status
-    //this.props.store.dispatch(userActions.logOut());
-
-    this.state = {
-      username: '',
-      password: '',
-      loggedin: '',
-      message: ''
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.loginClicked = this.loginClicked.bind(this);
-    // this.onClick = this.onClick.bind(this);
-  }
-
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-
-  loginClicked = e => {
-    e.preventDefault();
-    const credentials = {
-      username: this.state.username,
-      password: this.state.password
-    };
-
-    // To use Redux with further detail state, user action
-    axios
-      .post(baseUrl + '/login', credentials)
-      .then(response => {
-        console.log(response.data.username, response.data.loggedin);
-        this.setState({
-          username: response.data.username,
-          loggedin: response.data.loggedin
-        });
-        this.props.history.push('/');
-      })
-      .catch(err => {
-        this.setState({
-          message: 'Authentication failed. Please check your password.',
-          username: this.state.username,
-          loggedin: ''
-        });
-      });
-  };
+class Login extends React.Component {
+  //   loginClicked = () => {
+  //     this.props.history.push('/login');
+  //   };
 
   render() {
     return (
-      <React.Fragment>
-        <AppBar position='static' style={{ backgroundColor: '#607d8b' }}>
-          <Toolbar>
-            <Typography variant='h6' style={styles.header}>
-              Admin, please login
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Container maxWidth='sm'>
-          <br />
-          <Typography variant='h4' style={styles.center}>
-            Login
-          </Typography>
-          <form>
-            <Typography variant='h6' style={styles.notification}>
-              {this.state.message}
-            </Typography>
-            <TextField
-              type='text'
-              label='USERNAME'
-              fullWidth
-              margin='normal'
-              name='username'
-              value={this.state.username}
-              onChange={this.onChange}
-              onClick={this.onClick}
-            />
-
-            <TextField
-              type='password'
-              label='PASSWORD'
-              fullWidth
-              margin='normal'
-              name='password'
-              value={this.state.password}
-              onChange={this.onChange}
-              onClick={this.onClick}
-            />
-
-            <Button
-              variant='contained'
-              color='secondary'
-              onClick={this.loginClicked}
-            >
-              Login
-            </Button>
-          </form>
-        </Container>
-      </React.Fragment>
+      <Tooltip title='Login'>
+        <Link to='/login' className='nav-link'>
+          Login
+        </Link>
+      </Tooltip>
     );
   }
 }
+
+export default Login;

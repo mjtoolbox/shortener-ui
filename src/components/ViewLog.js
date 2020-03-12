@@ -2,10 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 export default class ViewLog extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   render() {
     const accessDate = moment(this.props.obj.lastAccessed).format(
       'YYYY-MM-DD HH:MM'

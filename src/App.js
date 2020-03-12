@@ -7,9 +7,14 @@ import ManageList from './components/ManageList';
 import ViewList from './components/ViewList';
 import UrlEdit from './components/UrlEdit';
 import LogList from './components/LogList';
+import LoginPage from './LoginPage';
 import Login from './Login';
+import Logout from './Logout';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const isLogged = useSelector(state => state.isLogged);
+
   return (
     <Router>
       <nav className='navbar navbar-expand-lg navbar-light bg-light static-top'>
@@ -40,16 +45,15 @@ function App() {
                   URLs
                 </Link>
               </li>
-              <li className='nav-item'>
-                <Link to={'/manage'} className='nav-link'>
-                  Manage
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link to={'/login'} className='nav-link'>
-                  Login
-                </Link>
-              </li>
+              {isLogged && (
+                <li className='nav-item'>
+                  <Link to={'/manage'} className='nav-link'>
+                    Manage
+                  </Link>
+                </li>
+              )}
+              {!isLogged && <Login />}
+              {isLogged && <Logout />}
             </ul>
           </div>
         </div>
@@ -61,11 +65,10 @@ function App() {
         <Route exact path='/urls' component={ViewList} />
         <Route exact path='/edit/:urlId' component={UrlEdit} />
         <Route exact path='/manage/logs/:shortUrl' component={LogList} />
-        <Route exact path='/login' component={Login} />
+        <Route exact path='/login' component={LoginPage} />
         {/* <Route exact path='/logout' component={Logout} />  */}
       </Switch>
     </Router>
   );
 }
-
 export default App;
