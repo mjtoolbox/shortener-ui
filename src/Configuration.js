@@ -1,5 +1,6 @@
 class Configuration {
-  API_BASE_URL = 'http://localhost:8080';
-  REDIRECT_URL = 'http://localhost:8080/redirect/';
+  // These URL are API URL rather than React Website URL
+  API_BASE_URL = "https://shortener0312.azurewebsites.net";
+  REDIRECT_URL = "https://shortener0312.azurewebsites.net/";
 }
 export default Configuration;

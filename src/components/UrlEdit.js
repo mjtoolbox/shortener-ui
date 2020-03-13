@@ -1,6 +1,5 @@
-import React from 'react';
-import axios from 'axios';
-import Navbar from './Navbar';
+import React from "react";
+import axios from "axios";
 import {
   Container,
   Card,
@@ -12,27 +11,23 @@ import {
   Button,
   TextField,
   Typography
-} from '@material-ui/core';
-import moment from 'moment';
-
-/**
- * For a better readability & maintainability, class and constructor to manage the state instead of function and redux.
- */
-
-const baseUrl = 'http://localhost:8080';
+} from "@material-ui/core";
+import moment from "moment";
+import Configuration from "../Configuration";
 
 export default class UrlEdit extends React.Component {
   constructor(props) {
     super(props);
+    this.config = new Configuration();
     this.onChangeOriginalUrl = this.onChangeOriginalUrl.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
-      urlId: '',
-      originalUrl: '',
-      shortUrl: '',
-      click: '',
-      createdBy: '',
-      last_updated: ''
+      urlId: "",
+      originalUrl: "",
+      shortUrl: "",
+      click: "",
+      createdBy: "",
+      last_updated: ""
     };
   }
 
@@ -44,7 +39,7 @@ export default class UrlEdit extends React.Component {
 
   componentDidMount() {
     axios
-      .get(baseUrl + '/urls/' + this.props.match.params.urlId)
+      .get(this.config.API_BASE_URL + "/urls/" + this.props.match.params.urlId)
       .then(response => {
         this.setState({
           urlId: response.data.urlId,
@@ -66,13 +61,13 @@ export default class UrlEdit extends React.Component {
       shortUrl: this.state.shortUrl,
       originalUrl: this.state.originalUrl,
       click: 0,
-      createdBy: 'Admin'
+      createdBy: "Admin"
     };
 
     axios
-      .put(baseUrl + '/urls/' + this.state.urlId, obj)
+      .put(this.config.API_BASE_URL + "/urls/" + this.state.urlId, obj)
       .then(response => {
-        this.props.history.push('/urls');
+        this.props.history.push("/urls");
       })
       .catch(function(error) {
         console.log(error);
@@ -88,117 +83,94 @@ export default class UrlEdit extends React.Component {
 
   render() {
     const updatedDate = moment(this.state.last_updated).format(
-      'YYYY-MM-DD HH:MM'
+      "YYYY-MM-DD HH:MM"
     );
     return (
       <div>
-        <Navbar></Navbar>
-
         <Container>
           <Card>
             <form onSubmit={this.onSubmit}>
               <CardHeader
-                style={{ textAlign: 'center' }}
-                subheader='As an admin, you can change only Long URL which will be mapped to existing short URL.'
+                style={{ textAlign: "center" }}
+                subheader="As an admin, you can change only Long URL which will be mapped to existing short URL."
                 title={
-                  <Typography variant={'h4'} gutterBottom>
+                  <Typography variant={"h4"} gutterBottom>
                     Update URL
                   </Typography>
                 }
               />
               <Divider />
               <CardContent>
-                <Grid container spacing={3} alignItems='center'>
+                <Grid container spacing={3} alignItems="center">
                   <Grid item md={2} xs={2}>
                     <TextField
                       fullWidth
-                      label='URL ID'
-                      margin='dense'
+                      label="URL ID"
+                      margin="dense"
                       required
                       value={this.state.urlId}
-                      variant='outlined'
+                      variant="outlined"
                       disabled
                     />
                   </Grid>
                   <Grid item md={12} xs={12}>
                     <TextField
                       fullWidth
-                      label='Long URL'
-                      margin='dense'
+                      label="Long URL"
+                      margin="dense"
                       required
                       value={this.state.originalUrl}
                       onChange={this.onChangeOriginalUrl}
-                      variant='outlined'
+                      variant="outlined"
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
                       required
-                      label='CANNOT change - Short URL name'
-                      margin='dense'
+                      label="CANNOT change - Short URL name"
+                      margin="dense"
                       value={this.state.shortUrl}
-                      variant='outlined'
+                      variant="outlined"
                       disabled
                     />
                   </Grid>
                   <Grid item md={1} xs={1}>
                     <TextField
                       fullWidth
-                      label='Clicked'
-                      margin='dense'
+                      label="Clicked"
+                      margin="dense"
                       required
                       value={this.state.click}
-                      variant='outlined'
+                      variant="outlined"
                       disabled
                     />
                   </Grid>
                   <Grid item md={2} xs={2}>
                     <TextField
                       fullWidth
-                      label='Last updated'
-                      margin='dense'
+                      label="Last updated"
+                      margin="dense"
                       required
                       value={updatedDate}
-                      variant='outlined'
+                      variant="outlined"
                       disabled
                     />
                   </Grid>
                   <Grid item md={2} xs={2}>
                     <TextField
                       fullWidth
-                      label='Created By'
-                      margin='dense'
+                      label="Created By"
+                      margin="dense"
                       required
                       value={this.state.createdBy}
-                      variant='outlined'
+                      variant="outlined"
                       disabled
                     />
                   </Grid>
-                  <Grid item md={6} xs={6}>
-                    <Grid container spacing={2} alignItems='center'>
-                      <Grid item md={4} xs={4}>
-                        <Button
-                          variant='outlined'
-                          color='primary'
-                          onClick={this.checkDuplicate}
-                        >
-                          Check Availability
-                        </Button>
-                      </Grid>
-                      <Grid item md={3} xs={3}>
-                        <Button
-                          variant='outlined'
-                          color='primary'
-                          onClick={this.clear}
-                        >
-                          Clear All
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  
                   <Grid item md={12} xs={12}>
-                    <Button color={this.state.msgColor} size='medium'>
+                    <Button color={this.state.msgColor} size="medium">
                       {this.state.message}
                     </Button>
                   </Grid>
@@ -207,13 +179,13 @@ export default class UrlEdit extends React.Component {
               <Divider />
               <CardActions>
                 <input
-                  type='submit'
-                  value='Update URL'
-                  className='btn btn-primary btn-md'
+                  type="submit"
+                  value="Update URL"
+                  className="btn btn-primary btn-md"
                 />
                 <Button
-                  title='Cancel'
-                  className='btn btn-primary btn-md'
+                  title="Cancel"
+                  className="btn btn-primary btn-md"
                   onClick={() => this.props.history.goBack()}
                 >
                   Cancel
@@ -223,7 +195,7 @@ export default class UrlEdit extends React.Component {
           </Card>
           <p />
 
-          <div class='label label-default'>{this.state.longUrl}</div>
+          <div className="label label-default">{this.state.longUrl}</div>
         </Container>
       </div>
     );
