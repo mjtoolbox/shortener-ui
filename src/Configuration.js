@@ -1,5 +1,5 @@
 class Configuration {
-  API_BASE_URL = 'http://localhost:8080';
-  REDIRECT_URL = 'http://localhost:8080/redirect/';
+  API_BASE_URL = 'https://shortener0312.azurewebsites.net';
+  REDIRECT_URL = 'https://shortener0312.azurewebsites.net/redirect/';
 }
 export default Configuration;
