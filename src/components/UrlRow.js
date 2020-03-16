@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import moment from 'moment';
-import Configuration from '../Configuration';
+import React from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
+import Configuration from "../Configuration";
 
 export default class UrlRow extends React.Component {
   constructor(props) {
@@ -11,19 +11,22 @@ export default class UrlRow extends React.Component {
     this.delete = this.delete.bind(this);
   }
 
-  delete() {
+  delete(e) {
+    e.preventDefault();
     axios
-      .delete(this.config.API_BASE_URL + '/urls/' + this.props.obj.urlId)
-      .then(res => console.log('deleted'))
+      .delete(this.config.API_BASE_URL + "/urls/" + this.props.obj.urlId)
+      .then(res => {
+        console.log("deleted");
+        window.location.reload();
+      })
       .catch(err => console.log(err));
   }
 
   render() {
     const updatedDate = moment(this.props.obj.last_updated).format(
-      'YYYY-MM-DD HH:MM'
+      "YYYY-MM-DD HH:MM"
     );
 
-    
     return (
       <tr>
         <td>{this.props.obj.urlId}</td>
@@ -34,22 +37,30 @@ export default class UrlRow extends React.Component {
         <td>{updatedDate}</td>
         <td>
           <Link
-            to={'/edit/' + this.props.obj.urlId}
-            className='btn btn-primary btn-sm'
+            to={"/edit/" + this.props.obj.urlId}
+            className="btn btn-primary btn-sm"
           >
             Edit
           </Link>
         </td>
-        <td >
-          <button onClick={this.delete} className='btn btn-danger btn-sm'>
+        <td>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={e =>
+              window.confirm("Are you sure you wish to delete this URL?") &&
+              this.delete(e)
+            }
+          >
             Delete
           </button>
         </td>
         <td>
           <Link
-            to={'/manage/logs/' + this.props.obj.shortUrl}
-            className='btn btn-primary btn-sm'
-          >Log</Link>
+            to={"/manage/logs/" + this.props.obj.shortUrl}
+            className="btn btn-primary btn-sm"
+          >
+            Log
+          </Link>
         </td>
       </tr>
     );
