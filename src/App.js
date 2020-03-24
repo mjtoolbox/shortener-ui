@@ -1,72 +1,94 @@
-import React from 'react';
-import './App.css';
-import logo from './wsbc.jpg';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Main from './Main';
-import ManageList from './components/ManageList';
-import ViewList from './components/ViewList';
-import UrlEdit from './components/UrlEdit';
-import LogList from './components/LogList';
-import LoginPage from './LoginPage';
-import Login from './Login';
-import Logout from './Logout';
-import { useSelector } from 'react-redux';
+import React from "react";
+import "./App.css";
+import logo from "./wsbc.jpg";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import Main from "./Main";
+import ManageList from "./components/ManageList";
+import ViewList from "./components/ViewList";
+import UrlEdit from "./components/UrlEdit";
+import LogList from "./components/LogList";
+import LoginPage from "./LoginPage";
+import Login from "./Login";
+import Logout from "./Logout";
+import { useSelector } from "react-redux";
+
+function PrivateRoute({ component: Component, isLogged, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>isLogged===true
+         ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{ pathname: "/login", state: { from: props.location } }}
+          />
+        )
+      }
+    />
+  );
+}
 
 function App() {
-  const isLogged = useSelector(state => state.isLogged);
+  const isLoggedConst = useSelector(state => state.isLogged);
 
   return (
     <Router>
-      <nav className='navbar navbar-expand-lg navbar-light bg-light static-top'>
-        <div className='container'>
-          <a className='navbar-brand' href='/'>
-            <img src={logo} alt='' width='140' />
+      <nav className="navbar navbar-expand-lg navbar-light bg-light static-top">
+        <div className="container">
+          <a className="navbar-brand" href="/">
+            <img src={logo} alt="" width="140" />
           </a>
           <button
-            className='navbar-toggler'
-            type='button'
-            data-toggle='collapse'
-            data-target='#navbarResponsive'
-            aria-controls='navbarResponsive'
-            aria-expanded='false'
-            aria-label='Toggle navigation'
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <span className='navbar-toggler-icon'></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div className='collapse navbar-collapse' id='navbarResponsive'>
-            <ul className='navbar-nav ml-auto'>
-              <li className='nav-item active'>
-                <Link to={'/'} className='nav-link'>
+          <div className="collapse navbar-collapse" id="navbarResponsive">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item active">
+                <Link to={"/"} className="nav-link">
                   Home
                 </Link>
               </li>
-              <li className='nav-item'>
-                <Link to={'/urls'} className='nav-link'>
+              <li className="nav-item">
+                <Link to={"/urls"} className="nav-link">
                   URLs
                 </Link>
               </li>
-              {isLogged && (
-                <li className='nav-item'>
-                  <Link to={'/manage'} className='nav-link'>
+              {isLoggedConst && (
+                <li className="nav-item">
+                  <Link to={"/manage"} className="nav-link">
                     Manage
                   </Link>
                 </li>
               )}
-              {!isLogged && <Login />}
-              {isLogged && <Logout />}
+              {!isLoggedConst && <Login />}
+              {isLoggedConst && <Logout />}
             </ul>
           </div>
         </div>
       </nav>
 
       <Switch>
-        <Route exact path='/' component={Main} />
-        <Route exact path='/manage' component={ManageList} />
-        <Route exact path='/urls' component={ViewList} />
-        <Route exact path='/edit/:urlId' component={UrlEdit} />
-        <Route exact path='/manage/logs/:shortUrl' component={LogList} />
-        <Route exact path='/login' component={LoginPage} />
-        {/* <Route exact path='/logout' component={Logout} />  */}
+        <Route exact path="/" component={Main} />
+        <PrivateRoute exact islogged ={isLoggedConst} path="/manage" component={ManageList} />
+        <Route exact path="/urls" component={ViewList} />
+        <Route exact path="/edit/:urlId" component={UrlEdit} />
+        <PrivateRoute exact islogged ={isLoggedConst} path="/manage/logs/:shortUrl" component={LogList} />
+        <Route exact path="/login" component={LoginPage} />
       </Switch>
     </Router>
   );
