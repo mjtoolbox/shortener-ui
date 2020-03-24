@@ -1,5 +1,5 @@
-import axios from 'axios';
-import Configuration from './Configuration';
+import axios from "axios";
+import Configuration from "./Configuration";
 
 class AuthService {
   constructor() {
@@ -10,14 +10,14 @@ class AuthService {
   // res.data contains JSON {username, password, loggedin(date type) }
   login(credentials) {
     return axios
-      .post(this.config.API_BASE_URL + '/login', credentials)
+      .post(this.config.API_BASE_URL + "/login", credentials)
       .then(res => {
         console.log(res.data);
         this.setUserProfile(res.data);
         return Promise.resolve(res);
       })
       .catch(err => {
-        console.log('Authentication failed', err);
+        console.log("Authentication failed", err);
       });
   }
 
@@ -41,10 +41,11 @@ class AuthService {
   // }
 
   setUserProfile(data) {
-    sessionStorage.setItem('userProfile', JSON.stringify(data));
+    sessionStorage.setItem("userProfile", JSON.stringify(data));
+    sessionStorage.setItem("isLogged", true);
   }
   getUserProfile() {
-    return JSON.parse(sessionStorage.getItem('userProfile'));
+    return JSON.parse(sessionStorage.getItem("userProfile"));
   }
 
   loggedIn() {
@@ -53,8 +54,8 @@ class AuthService {
   }
 
   logOut() {
-    sessionStorage.removeItem('userProfile');
-    sessionStorage.removeItem('isLogged');
+    sessionStorage.removeItem("userProfile");
+    sessionStorage.removeItem("isLogged");
     return axios.get(this.config.API_BASE_URLE_URL);
   }
 

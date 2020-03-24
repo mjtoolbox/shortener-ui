@@ -18,11 +18,12 @@ import Login from "./Login";
 import Logout from "./Logout";
 import { useSelector } from "react-redux";
 
-function PrivateRoute({ component: Component, isLogged, ...rest }) {
+function PrivateRoute({ component: Component,  ...rest }) {
+
   return (
     <Route
       {...rest}
-      render={(props) =>isLogged===true
+      render={props =>sessionStorage.getItem('isLogged')
          ? (
           <Component {...props} />
         ) : (
@@ -84,10 +85,10 @@ function App() {
 
       <Switch>
         <Route exact path="/" component={Main} />
-        <PrivateRoute exact islogged ={isLoggedConst} path="/manage" component={ManageList} />
+        <PrivateRoute exact path="/manage" component={ManageList} />
         <Route exact path="/urls" component={ViewList} />
         <Route exact path="/edit/:urlId" component={UrlEdit} />
-        <PrivateRoute exact islogged ={isLoggedConst} path="/manage/logs/:shortUrl" component={LogList} />
+        <PrivateRoute exact path="/manage/logs/:shortUrl" component={LogList} />
         <Route exact path="/login" component={LoginPage} />
       </Switch>
     </Router>

@@ -130,10 +130,10 @@ class Content extends React.Component {
           <form onSubmit={this.onSubmit}>
             <CardHeader
               style={{ textAlign: 'center' }}
-              subheader='shorten your URL'
+              subheader='Keep it simple and short'
               title={
                 <Typography weight={'bold'} variant={'h4'} gutterBottom>
-                  Enter Long URL
+                  Shorten your URL
                 </Typography>
               }
             />
@@ -155,7 +155,7 @@ class Content extends React.Component {
                   <TextField
                     fullWidth
                     required
-                    label='Custom Short URL name'
+                    label='Custom Short URL name, cannot start with special character'
                     margin='dense'
                     value={this.state.shortUrl}
                     onChange={this.onChangeShortUrl}
